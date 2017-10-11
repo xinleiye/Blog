@@ -15,8 +15,8 @@ userRouter.use(function (req, res, next) {
  * 用户管理首页
  */
 userRouter.get("/", function (req, res, next) {
-    res.render("admin/index", function () {
-        userInfo: req.userInfo;
+    res.render("admin/index", {
+        userInfo: req.userInfo
     });
 });
 
