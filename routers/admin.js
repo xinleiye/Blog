@@ -137,5 +137,119 @@ userRouter.post("/category/add", function(req, res) {
 
 });
 
+/**
+ * 分类的修改
+ */
+userRouter.get("/category/edit", function(req, res){
+    var id;
+
+    id = req.query.id || "";
+
+    category.findOne({
+        _id: id
+    }).then(function(category) {
+        if (!category) {
+            res.render("admin/error", {
+                userInfo: req.userInfo,
+                message: "分类信息不存在"
+            });
+        } else {
+            res.render("admin/category_edit", {
+                userInfo: req.userInfo,
+                category: category
+            });
+        }
+    })
+})
+
+ /**
+  * 保存修改的分类
+  */
+userRouter.post("/category/edit", function(req, res) {
+    var name, id;
+
+    id = req.query.id || "";
+    name = req.body.name || "";
+
+    category.findOne({
+        _id: id
+    }).then(function(data) {
+        if (!data) {
+            res.render("admin/error", {
+                userInfo: req.userInfo,
+                message: "分类信息不存在"
+            });
+            return Promise.reject();
+        } else {
+            //未作任何修改提交
+            if (name === data.name) {
+                res.render("admin/success", {
+                    userInfo: req.userInfo,
+                    message: "修改成功",
+                    url: "/admin/category"
+                });
+                return Promise.reject();
+            } else {
+                return category.findOne({
+                    // {$ne: id}: id不等于当前id
+                    _id: {$ne: id},
+                    name: name
+                });
+            }
+        }
+    }).then(function(sameData) {
+        if (sameData) {
+            res.render("admin/error", {
+                userInfo: req.userInfo,
+                message: "数据库中已存在同名分类"
+            });
+            return Promise.reject();
+        } else {
+            return category.update({
+                _id: id
+            }, {
+                name: name
+            });
+        }
+    }).then(function() {
+        res.render("admin/success", {
+            userInfo: req.userInfo,
+            message: "修改成功",
+            url: "/admin/category"
+        });
+    })
+});
+
+/**
+ * 删除分类
+ */
+userRouter.get("/category/delete", function(req, res) {
+    var id;
+
+    id = req.query.id || "";
+
+    category.findOne({
+        _id: id
+    }).then(function(data) {
+        if (!data) {
+            res.render("admin/error", {
+                userInfo: req.userInfo,
+                message: "要删除的分类不存在"
+            })
+            return Promise.reject();
+        } else {
+            category.remove({
+                _id: id
+            }).then(function(data) {
+                console.log(data)
+                res.render("admin/success", {
+                    userInfo: req.userInfo,
+                    message: "删除成功",
+                    url: "/admin/category"
+                })
+            });
+        }
+    });
+})
 
 module.exports = userRouter;
