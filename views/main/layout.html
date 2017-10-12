@@ -23,14 +23,6 @@
         {%else%}
         <a href="/">首页</a>
         {%endif%}
-
-        {%for cate in categories%}
-        {%if category == cate.id%}
-        <a href="/?category={{cate.id}}" class="focus">{{cate.name}}</a>
-        {%else%}
-        <a href="/?category={{cate.id}}">{{cate.name}}</a>
-        {%endif%}
-        {%endfor%}
     </div>
 </nav>
 
