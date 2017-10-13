@@ -37,13 +37,11 @@ userRouter.get("/user", function(req, res) {
     pages = 0;
     page = Number(req.query.page || 1);
     user.count().then(function (count) {
-        //console.log(count);
         pages = Math.ceil(count / limit);
         page = Math.min(page, pages);
         page = Math.max(page, 1);
         skip = (page - 1) * limit;
         user.find().limit(2).skip(skip).then(function (users) {
-            //console.log(users);
             res.render("admin/user_index", {
                 //给user_index模板传数据
                 userInfo: req.userInfo,
@@ -124,7 +122,6 @@ userRouter.post("/category/add", function(req, res) {
             });
             return Promise.reject();
         } else {
-            console.log("save data");
             return new category({
                 name: name
             }).save();
@@ -243,7 +240,6 @@ userRouter.get("/category/delete", function(req, res) {
             category.remove({
                 _id: id
             }).then(function(data) {
-                console.log(data)
                 res.render("admin/success", {
                     userInfo: req.userInfo,
                     message: "删除成功",
@@ -268,7 +264,7 @@ userRouter.get("/content", function(req, res) {
         page = Math.max(page, 1);
         skip = (page - 1) * limit;
 
-        content.find().limit(limit).skip(skip).populate("category").then(function(data) {
+        content.find().limit(limit).skip(skip).populate(["category", "user"]).then(function(data) {
             res.render("admin/content_index", {
                 userInfo: req.userInfo,
                 contents: data,
@@ -319,6 +315,7 @@ userRouter.post("/content/add", function(req, res) {
     new content({
         category: req.body.category,
         title: req.body.title,
+        user: req.userInfo.id.toString(),
         description: req.body.description,
         content: req.body.content
     }).save().then(function() {
@@ -393,7 +390,7 @@ userRouter.post("/content/edit", function(req, res) {
     }
 
     id = req.query.id;
-console.log(id, req.body);
+
     content.update({
         _id: id
     }, {

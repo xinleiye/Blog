@@ -8,6 +8,24 @@ module.exports = new mongoose.Schema({
         ref: "category"
     },
 
+    //内容作者
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    },
+
+    //内容创建时间
+    addTime: {
+        type: Date,
+        default: new Date()
+    },
+
+    //阅读
+    views: {
+        type: Number,
+        default: 0
+    },
+
     //分类标题
     title: String,
 

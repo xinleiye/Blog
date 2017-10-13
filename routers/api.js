@@ -19,7 +19,6 @@ apiRouter.use(function (req, res, next) {
  *   验证用户名密码
  */
 apiRouter.post("/user/register", function (req, res, next) {
-    console.log(req.body);
 
     var username = req.body.username;
     var password = req.body.password;
@@ -49,7 +48,6 @@ apiRouter.post("/user/register", function (req, res, next) {
     User.findOne({
         username: username
     }).then(function (userInfo) {
-        //console.log(userInfo);
         var user;
         if ( userInfo ) {
             responseData.code = 4;
@@ -64,7 +62,6 @@ apiRouter.post("/user/register", function (req, res, next) {
         });
         return user.save();
     }).then(function (newUserInfo) {
-        //console.log("newUserInfo: %s", newUserInfo);
         responseData.message = "注册成功";
         res.json(responseData);
     });

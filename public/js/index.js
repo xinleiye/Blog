@@ -25,7 +25,6 @@ $(function() {
             },
             dataType: "json",
             success: function(result) {
-                console.log("register: %s", result);
                 $registerBox.find(".colWarning").html(result.message);
 
                 if (!result.code) {
