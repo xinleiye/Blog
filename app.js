@@ -96,7 +96,6 @@ app.use(function (req, res, next) {
         try {
             req.userInfo = JSON.parse(req.cookies.get("userInfo"));
             user.findById(req.userInfo.id).then(function (userInfo) {
-                console.log(userInfo);
                 req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
                 next();
             })
