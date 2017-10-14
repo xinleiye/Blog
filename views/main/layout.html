@@ -26,9 +26,9 @@
 
         {% for cate in categories %}
         {% if category == cate.id %}
-        <a href="/" class="focus">{{cate.name}}</a>
+        <a href="/?category={{cate.id}}" class="focus">{{cate.name}}</a>
         {% else %}
-        <a href="/">{{cate.name}}</a>
+        <a href="/?category={{cate.id}}">{{cate.name}}</a>
         {% endif %}
         {% endfor %}
 
