@@ -20,14 +20,19 @@ homeRouter.use(function (req, res, next) {
 
 homeRouter.get("/", function (req, res, next) {
 
-    var page, pages, limit, skip;
+    var where, page, pages, limit, skip;
 
     data.category = req.query.category || "";
 
+    where = {};
     limit = 10;
     page = Number(req.query.page) || 1;
 
-    content.count().then(function (count) {
+    if (data.category) {
+        where.category = data.category;
+    }
+
+    content.where(where).count().then(function (count) {
         pages = Math.ceil(count / limit);
         page = Math.min(page, pages);
         page = Math.max(page, 1);
@@ -38,7 +43,7 @@ homeRouter.get("/", function (req, res, next) {
         data.limit = limit;
         skip = (page - 1) * limit;
 
-        return content.find().limit(limit).skip(skip).populate(["category", "user"]).sort({addTime: -1});
+        return content.where(where).find().limit(limit).skip(skip).populate(["category", "user"]).sort({addTime: -1});
 
     }).then(function (contents) {
         data.contents = contents;
