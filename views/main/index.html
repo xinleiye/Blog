@@ -2,28 +2,39 @@
 
 {%block content%}
 
+    {% for content in contents %}
     <div class="listBox">
-        <h1>原生JS中，typeof关键字详解</h1>
-        <p class="colDefault">
-            作者：<span class="colInfo">admin</span>
-            时间：<span class="colInfo">2017-05-06 09:45:02</span>
-            阅读：<span class="colInfo">256</span>
-            评论：<span class="colInfo">23</span>
-        </p>
-        <dfn>原生JS里，怎么判断数据类型呢？</dfn>
-        <div class="function"><a href="">阅读全文</a></div>
+            <h1>{{content.title}}</h1>
+            <p class="colDefault">
+                作者：<span class="colInfo">{{content.user.username}}</span>
+                时间：<span class="colInfo">{{content.addTime|date("Y-m-d H:i:s", -8*60)}}</span>
+                阅读：<span class="colInfo">{{content.views}}</span>
+                评论：<span class="colInfo">23</span>
+            </p>
+            <dfn>{{content.description}}</dfn>
+            <div class="function"><a href="">阅读全文</a></div>
     </div>
+    {% endfor %}
 
     <div class="pager">
         <ul class="clear">
+
             <li class="previous">
+                {% if page <= 1 %}
                 <span>没有上一页了</span>
+                {% else %}
+                <span><a href="/?page={{page-1}}">上一页</a></span>
+                {% endif%}
             </li>
             <li>
-                <strong>1 / 1</strong>
+                <strong>{{page}} / {{pages}}</strong>
             </li>
             <li class="next">
+                {% if page >= pages %}
                 <span>没有下一页了</span>
+                {% else %}
+                <span><a href="/?page={{page+1}}">下一页</a></span>
+                {% endif %}
             </li>
         </ul>
     </div>
