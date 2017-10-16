@@ -10,7 +10,7 @@ homeRouter.get("/", function (req, res, next) {
 
     cate = req.query.category;
 
-    category.find().then(function(data) {
+    category.find().then(function (data) {
         res.render("main/index", {
             userInfo: req.userInfo,
             categories: data,
