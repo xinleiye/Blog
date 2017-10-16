@@ -52,4 +52,21 @@ homeRouter.get("/", function (req, res, next) {
 
 });
 
+homeRouter.get("/view", function (req, res) {
+    var contentID;
+
+    contentID = req.query.contentID || "";
+
+    content.findOne({
+        _id: contentID
+    }).then(function (content) {
+        data.content = content;
+
+        content.views++;
+        content.save();
+
+        res.render("main/view", data);
+    })
+})
+
 module.exports = homeRouter;
