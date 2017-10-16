@@ -1,6 +1,8 @@
 
 var express = require("express");
+
 var User = require("../models/user");
+var content = require("../models/content");
 
 var apiRouter = express.Router();
 
@@ -102,16 +104,56 @@ apiRouter.post("/user/login", function (req, res) {
         }));
         res.json(responseData);
         return;
-    })
-})
+    });
+});
 
 /**
  * 退出
  */
-apiRouter.get("/user/logout", function(req, res) {
+apiRouter.get("/user/logout", function (req, res) {
     req.cookies.set("userInfo", null);
     res.json(responseData);
-})
+});
 
+/**
+ * 获取一篇内容的所有评论
+ */
+apiRouter.get("/comment", function (req, res) {
+    var contentID;
+
+    contentID = req.query.contentID || "";
+
+    content.findOne({
+        _id: contentID
+    }).then(function(content) {
+        responseData.data = content.comments;
+        res.json(responseData);
+    });
+});
+
+/**
+ * 评论提交
+ */
+apiRouter.post("/comment/post", function (req, res) {
+    var id, postData;
+
+    id = req.body.contentID || "";
+    postData = {
+        username: req.userInfo.username,
+        postTime: new Date(),
+        content: req.body.content
+    };
+
+    content.findOne({
+        _id: id
+    }).then(function (content) {
+        content.comments.push(postData);
+        return content.save();
+    }).then(function (newContent) {
+        responseData.message = "评论成功";
+        responseData.data = newContent;
+        res.json(responseData);
+    });
+});
 
 module.exports = apiRouter;

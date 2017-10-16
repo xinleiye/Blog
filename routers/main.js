@@ -59,9 +59,8 @@ homeRouter.get("/view", function (req, res) {
 
     content.findOne({
         _id: contentID
-    }).then(function (content) {
+    }).populate(["category", "user"]).then(function (content) {
         data.content = content;
-
         content.views++;
         content.save();
 
