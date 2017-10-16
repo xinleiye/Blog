@@ -8,5 +8,5 @@ Blog由三个模块构成
 
 首页
 <p align="center">
-  <img src="Blog/pictures/首页.JPG">
+  <img src="https://github.com/xinleiye/Blog/blob/master/pictures/%E9%A6%96%E9%A1%B5.JPG">
 </p>
