@@ -5,3 +5,8 @@ Blog由三个模块构成
 * 首页
 * 后台管理
 * api模块
+
+首页
+<p align="center">
+  <img src="Blog/pictures/首页.JPG">
+</p>
